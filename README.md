@@ -83,13 +83,24 @@ Current configuration defaults to:
 {
   "config": {
     "loader": {
-      "load": ["output/svg", "[tex]/require", "[tex]/ams"]
+      "load": ["output/svg", "[tex]/require", "[tex]/ams", "ui/safe"]
     },
     "tex": {
       "inlineMath": [["$", "$"]],
       "packages": ["base", "require", "ams"]
     },
-    "svg": { "fontCache": "global" }
+    "svg": { "fontCache": "global" },
+    "options": {
+      "safeOptions": {
+        "safeProtocols": {
+          "http": true,
+          "https": true,
+          "file": false,
+          "javascript": false,
+          "data": false
+        }
+      }
+    }
   },
   "src": "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/startup.js"
 }

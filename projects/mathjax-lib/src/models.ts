@@ -20,7 +20,7 @@ export const mathjax_url =
  */
 export const MathjaxDefaultConfig = {
   loader: {
-    load: ['output/svg', '[tex]/require', '[tex]/ams'],
+    load: ['output/svg', '[tex]/require', '[tex]/ams', 'ui/safe'],
   },
   tex: {
     inlineMath: [['$', '$']],
@@ -28,6 +28,17 @@ export const MathjaxDefaultConfig = {
     packages: ['base', 'require', 'ams'],
   },
   svg: { fontCache: 'global' },
+  options: {
+    safeOptions: {
+      safeProtocols: {
+        http: true,
+        https: true,
+        file: false,
+        javascript: false,
+        data: false,
+      },
+    },
+  },
 };
 /**
  * config - http://docs.mathjax.org/en/latest/web/configuration.html#configuring-and-loading-mathjax
