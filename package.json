@@ -1,5 +1,5 @@
 {
-  "name": "mathjax-angular-project",
+  "name": "mathjax-angular",
   "version": "4.0.0",
   "description": "A quick way to implement Mathjax v3 into your Angular project!",
   "homepage": "https://github.com/sajivkumar/mathjax-angular/blob/main/README.md",
@@ -26,22 +26,12 @@
     "dev": "npm run serve dev",
     "prod": "npm run serve prod",
     "semantic-release": "semantic-release",
-    "commit": "git add . && git-cz"
+    "commit": "git add . && git-cz",
+    "prepare": "npm run build-lib"
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^21.2.26",
-    "@angular/common": "^21.2.26",
-    "@angular/compiler": "^21.2.26",
-    "@angular/core": "^21.2.26",
-    "@angular/forms": "^21.2.26",
-    "@angular/platform-browser": "^21.2.26",
-    "@angular/platform-browser-dynamic": "^21.2.26",
-    "@angular/router": "^21.2.26",
-    "mathjax-angular": "file:./dist/mathjax-lib",
-    "rxjs": "~7.5.0",
-    "tslib": "^2.4.0",
-    "zone.js": "^0.15.0"
+    "tslib": "^2.4.0"
   },
   "devDependencies": {
     "@angular/build": "^21.2.29",
@@ -59,7 +49,17 @@
     "npm-run-all": "^4.1.5",
     "semantic-release": "^23.0.2",
     "typescript": "~5.9.3",
-    "wait-on": "^7.2.0"
+    "wait-on": "^7.2.0",
+    "@angular/animations": "^21.2.26",
+    "@angular/common": "^21.2.26",
+    "@angular/compiler": "^21.2.26",
+    "@angular/core": "^21.2.26",
+    "@angular/forms": "^21.2.26",
+    "@angular/platform-browser": "^21.2.26",
+    "@angular/platform-browser-dynamic": "^21.2.26",
+    "@angular/router": "^21.2.26",
+    "rxjs": "~7.5.0",
+    "zone.js": "^0.15.0"
   },
   "jest": {
     "preset": "jest-preset-angular",
@@ -88,5 +88,22 @@
     "branches": [
       "main"
     ]
-  }
+  },
+  "peerDependencies": {
+    "@angular/common": "^21.0.0",
+    "@angular/core": "^21.0.0"
+  },
+  "files": [
+    "dist/mathjax-lib"
+  ],
+  "module": "./dist/mathjax-lib/fesm2022/mathjax-angular.mjs",
+  "typings": "./dist/mathjax-lib/types/mathjax-angular.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/mathjax-lib/types/mathjax-angular.d.ts",
+      "default": "./dist/mathjax-lib/fesm2022/mathjax-angular.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false
 }
