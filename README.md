@@ -87,7 +87,9 @@ Current configuration defaults to:
     },
     "tex": {
       "inlineMath": [["$", "$"]],
-      "packages": ["base", "require", "ams"]
+      "packages": ["base", "require", "ams"],
+      "maxMacros": 1000,
+      "maxBuffer": 5120
     },
     "svg": { "fontCache": "global" },
     "options": {
@@ -105,6 +107,8 @@ Current configuration defaults to:
   "src": "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/startup.js"
 }
 ```
+
+The defaults limit TeX macro substitutions to 1,000 per expression and the internal TeX buffer to 5,120 characters. These are not rendering timeouts or total input-size limits. Custom `tex` configuration replaces the default `tex` block; include these limits when overriding it.
 
 - For **_config_** field refer [this][6].
 - For **_src_** field refer [CDN][7].

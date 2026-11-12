@@ -26,6 +26,8 @@ export const MathjaxDefaultConfig = {
     inlineMath: [['$', '$']],
     //displayMath: [['$$', '$$']],
     packages: ['base', 'require', 'ams'],
+    maxMacros: 1000,
+    maxBuffer: 5 * 1024,
   },
   svg: { fontCache: 'global' },
   options: {
