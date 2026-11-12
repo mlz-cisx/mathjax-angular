@@ -1,10 +1,7 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { MathjaxDirective } from './mathjax.directive';
-import {
-  MathjaxDefaultConfig,
-  mathjax_url,
-  RootMathjaxConfig,
-} from '../models';
+import { RootMathjaxConfig } from '../models';
+import { loadMathjax } from './mathjax-loader';
 
 @NgModule({
   declarations: [MathjaxDirective],
@@ -12,51 +9,7 @@ import {
 })
 export class MathjaxModule {
   constructor(private moduleConfig: RootMathjaxConfig) {
-    //
-    this.addConfigToDocument();
-    //
-    this.addMatjaxToDocument();
-  }
-
-  private addConfigToDocument() {
-    const tagId = 'mathjax-config-script';
-    const isScript = document.getElementById(tagId);
-    if (isScript) return;
-    //
-    const providConfig = {
-      ...MathjaxDefaultConfig,
-      ...(this.moduleConfig?.config ?? {}),
-    };
-    const script = document.createElement('script') as HTMLScriptElement;
-    script.id = tagId;
-    script.type = 'text/javascript';
-    script.text = `
-      MathJax = ${JSON.stringify(providConfig)};
-      MathJax.isReady = false;
-      MathJax.promise = new Promise(function (resolve, reject) {
-        MathJax.startup = {
-            ready() {
-              MathJax.isReady = true;
-              MathJax.startup.defaultReady();
-              MathJax.startup.promise.then(() => resolve());
-            }
-        };
-      });
-    `;
-    document.getElementsByTagName('head')[0].appendChild(script);
-  }
-
-  private addMatjaxToDocument() {
-    const tagId = 'mathjax-script';
-    const isScript = document.getElementById(tagId);
-    if (isScript) return;
-    //
-    const script = document.createElement('script') as HTMLScriptElement;
-    script.id = tagId;
-    script.type = 'text/javascript';
-    script.src = this.moduleConfig?.src ?? mathjax_url;
-    script.async = true;
-    document.getElementsByTagName('head')[0].appendChild(script);
+    loadMathjax(this.moduleConfig ?? {});
   }
 
   public static forRoot(
