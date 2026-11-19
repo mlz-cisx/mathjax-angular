@@ -51,3 +51,20 @@ test('ignores stale renders, scopes typesetting, and clears on destruction', asy
   await queueMathjax(() => undefined);
   expect(runtime.typesetClear).toHaveBeenCalledTimes(2);
 });
+
+test('marks content ready after rendering', async () => {
+  globals.MathJax = {
+    promise: Promise.resolve(),
+    typesetPromise: jest.fn().mockResolvedValue(undefined),
+    typesetClear: jest.fn(),
+  };
+  const element = document.createElement('div');
+  const directive = new MathjaxDirective(new ElementRef(element));
+  directive.ngOnChanges({ mathjax: new SimpleChange(undefined, '$x$', true) });
+  expect(directive.renderReady()).toBe(false);
+  await queueMathjax(() => undefined);
+  expect(element.textContent).toBe('$x$');
+  expect(directive.renderReady()).toBe(true);
+  directive.ngOnDestroy();
+  await queueMathjax(() => undefined);
+});

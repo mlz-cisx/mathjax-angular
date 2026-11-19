@@ -5,6 +5,7 @@ import {
   OnChanges,
   OnDestroy,
   SimpleChanges,
+  signal,
 } from '@angular/core';
 import { fixMathjaxBugs, getMathjaxContent, isMathjax } from '../utils';
 import { MathjaxContent } from '../models';
@@ -15,6 +16,9 @@ import { queueMathjax } from './mathjax-loader';
     standalone: false
 })
 export class MathjaxDirective implements OnChanges, OnDestroy {
+  /** set to true once the current input has been written and typeset successfully. */
+  readonly renderReady = signal(false);
+
   private revision = 0;
   private destroyed = false;
   //
@@ -40,6 +44,7 @@ export class MathjaxDirective implements OnChanges, OnDestroy {
     ) {
       return;
     }
+    this.renderReady.set(false);
     const revision = ++this.revision;
     const value = getMathjaxContent(expressions.currentValue) + '';
     const hasMath = isMathjax(value);
@@ -51,11 +56,13 @@ export class MathjaxDirective implements OnChanges, OnDestroy {
       runtime.typesetClear([this.element]);
       this.element.innerHTML = html;
       if (hasMath) await runtime.typesetPromise([this.element]);
+      if (!this.destroyed && revision === this.revision) this.renderReady.set(true);
     }).catch((error: Error) => console.error('Typeset failed: ' + error.message));
   }
 
   ngOnDestroy(): void {
     this.destroyed = true;
+    this.renderReady.set(false);
     void queueMathjax((runtime) => runtime.typesetClear([this.element]))
       .catch(() => undefined);
   }
